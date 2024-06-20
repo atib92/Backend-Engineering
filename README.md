@@ -1,1 +1,1 @@
-# Explore
+# This repository is a collection of educational materials across a variety of topics. Topics range from very specific libraries like Python's multiprocessing lib to Protocols like websockets to systems like Kafka and PubSub etc.
