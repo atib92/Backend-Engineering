@@ -42,11 +42,20 @@ the latter the same TCP connection is used.
 Irrespective of that, each Polling Req/Resp is still
 a complete HTTP Req/Resp msg and thereby containt all the HTTP Headers. For small Push messages
 the headers can represent a large overhead.
-Also, OS will allocate resources for any open TCP/IP and HTTP Connection. Too many of these open
+Also, the OS allocates resources for any open TCP/IP and HTTP Connections. Too many of these open
 connections can cause graceful degradation in performance. 
 
 ### HTTP Streaming
-The Server keeps the connection open indefinitely even after it has sent the response. 
+The Server keeps the http connection open indefinitely even after it has sent the response (unlike
+long/shot polling where the connection is closed as soon as a response is sent). This significantly
+reduces latency and overhead since new connections need not be established everytime. HTTP Streaming
+allows Servers to push Chuncked pieces of information in the same response. Some of the common problems
+with Http Streaming are a. Proxies: The Http Protocol allows for Proxies to be involved in the 
+request-response exchange. There is no requirement for a Proxy to immediately forward partial response
+and it is legal for these proxies to buffer chunks before sending the complete response to the Client. 
+Streaming breaks in these cases. b. Client Buffering : A similar problem can happen on the Client side
+where a client caches all the chucked response before building the complete response and making it
+available to the application. There is nothing in the HTTP Protocol to prevent client from doing that.
 
 ## Common Use Cases
 Instant messaging applications, Gaming applications, Video Calling applications, Finance Tickers,
