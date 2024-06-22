@@ -65,4 +65,5 @@ Collab like Google Docs, etc...
 Websocket Protocol RFC : https://datatracker.ietf.org/doc/html/rfc6455 
 For understanding Long Polling and HTTP Streaming which are precursors to websockets :  https://datatracker.ietf.org/doc/html/rfc6202 
 
-## Building an Application using WebSocket (Chat / Video Calling etc...)
+## Building an Application using WebSocket
+This can be a Chat, Video Calling, or any other app that demonstrates the usage of websockets.
