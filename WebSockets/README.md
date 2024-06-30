@@ -4,20 +4,34 @@ way to achive bidirectional communication has been via Polling (Short/Long) or H
 on these later.
 
 ## Background
-The standard HTTP Protocol is a Client(Request) -> (Response) Server model i,e a Client initiates a
+The standard HTTP Protocol is a Client(Request) -> (Response)Server model i,e a Client initiates a
 HTTP Request to a Server and the Server responds with data in a HTTP Resonse. The model doesn't allow
-a Server to send asynchronously to a Client i,e a Reponse without any Request. a.k.a there isn't a
+a Server to send asynchronous data to a Client i,e a Reponse without a Request. a.k.a there isn't a
 way for Servers to "Push Notifications" to Clients. The traditional way to achieve this using the
 standard HTTP Protocol is by Polling the Server for any data while the Server responds if it has some
 data to send. Obviously Polling is resource intenseive (wasted connections and resources when there
-is not data to send) and inefficient (Client's responsiveness takes a hit since data is queue in the
-Server until it receives a Polling request). The two most common Server Push mechanism used are Long
-Polling and HTTP Streaming. (covered in the Alternatives section)
+is no data to send) and inefficient (Client's responsiveness takes a hit since data is queued in the
+Server until it receives a Polling request). The two most common Server Push mechanism used are 
+Long/Short Polling and HTTP Streaming (covered in the alternatives section). The WebSocket Protocol
+attempts to solve the goal of existing bidirectional http technologies in the context of the existing
+http infra (proxies, authentication, filtering) and hence is designed to work over http ports 80 and
+443 and support http proxies and intermediaries. However the websocket protocol design doesn't restrict
+it to http. A future implementation can use a simpler handshake mechanism and a dedicated port without
+reinventing the protocol from scratch.
 
 ## What are WebSockets ?
-
+WebSocket are two way i,e Full Duplex communication channel allowing both Client and Server to exchange
+data independent of each other at will. The protocol has 2 parts, the handshake and data transfer. Once
+the handshake is successfully done both sides can transfer data in logical units referred to as 'messages'.
 
 ## Why do we need WebSockets
+For full duplex communications over a Single TCP connection.
+
+## Some important aspects of the WebSocket Protocoal
+1. Its an independent TCP based protocol, its only dependence on HTTP is that its handshake is interpreted
+by http servers as an Upgrade Request.
+2. Conceptually WebSocket is just a layer on top of TCP
+3. Security : Uses 'Origin' based security
 
 ## Alternative ways to Push Notifications
 
@@ -40,7 +54,7 @@ Note: Both short and long Polling can be implemented either by non-persistent or
 connections. In the former, new Long Polling HTTP Requests are over a new TCP connection while in
 the latter the same TCP connection is used.
 Irrespective of that, each Polling Req/Resp is still
-a complete HTTP Req/Resp msg and thereby containt all the HTTP Headers. For small Push messages
+a complete HTTP Req/Resp msg and thereby containts all the HTTP Headers. For small Push messages
 the headers can represent a large overhead.
 Also, the OS allocates resources for any open TCP/IP and HTTP Connections. Too many of these open
 connections can cause graceful degradation in performance. 
@@ -56,6 +70,13 @@ and it is legal for these proxies to buffer chunks before sending the complete r
 Streaming breaks in these cases. b. Client Buffering : A similar problem can happen on the Client side
 where a client caches all the chucked response before building the complete response and making it
 available to the application. There is nothing in the HTTP Protocol to prevent client from doing that.
+
+#### Http Streaming Vs WebSockets
+The point to note is that HTTP Streaming is not fully duplex as in the Client cannot send independently
+to the Server. The Client simple starts a http Connection which is then used by the Server to stream 
+chunked data to the Client. Its primarily a way for Servers to stream data to Clients in applications
+like video streaming etc. WebSockets on the other hand are Full Duplex channels where both Client and
+Server can exchange data independently.
 
 ## Common Use Cases
 Instant messaging applications, Gaming applications, Video Calling applications, Finance Tickers,
