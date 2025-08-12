@@ -100,5 +100,5 @@ Understanding and addressing these limitations is crucial for building high-perf
 
 ## Quick Points on Sanic's Runtime
 * Each worker is a process
-* Each worker runs an async event loop that await() incoming connection from the listening socket and processes the requests concurrently
+* Each worker runs an async event loop that accept()'s incoming connection from the listening socket and processes the requests concurrently
 * Blocking coroutine freezes that coroutine i,e no other request in that worker would make progress nor that worker's event loop will be able to accept() new connections from the kernel socket
