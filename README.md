@@ -1,2 +1,2 @@
-# Repo Info: 
-This repository is a collection of educational materials across a variety of topics. Topics range from very specific libraries like Python's multiprocessing lib to Protocols like websockets to systems like Kafka and PubSub etc.
+# Info: 
+This repository is supposed to be a collection of educational materials and deep dives across a variety of topics mostly related to Backend Engineering. Topics range from higher level concepts to specific libraries and frameworks.
